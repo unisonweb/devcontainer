@@ -25,10 +25,10 @@ RUN apt-get update \
     # Verify git, process tools, lsb-release (common in install instructions for CLIs) installed
     && apt-get -y install git iproute2 procps lsb-release wget \
     # install unison
-    && wget https://github.com/unisonweb/unison/releases/download/release%2FM1m/unison-linux64.tar.gz \
-    && tar -xzf unison-linux64.tar.gz \
-    && mv ucm /usr/bin/ \
-    && rm unison-linux64.tar.gz \
+    && wget https://github.com/unisonweb/unison/releases/download/M2-Linux/unison-Linux.tar.gz \
+    && tar -xzf unison-Linux.tar.gz \
+    && ln -s ucm /usr/bin/ \
+    && rm unison-Linux.tar.gz \
     #
     # Create a non-root user to use if preferred - see https://aka.ms/vscode-remote/containers/non-root-user.
     && groupadd --gid $USER_GID $USERNAME \
