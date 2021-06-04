@@ -14,6 +14,9 @@ ENV DEBIAN_FRONTEND=noninteractive
 ARG USERNAME=vscode
 ARG USER_UID=1000
 ARG USER_GID=$USER_UID
+ARG UCM_DIR=/opt/unison-language
+ARG UCM_ARCHIVE_NAME=unison-Linux.tar.gz
+ARG UCM_ARCHIVE_URL=https://github.com/unisonweb/unison/releases/download/M2-Linux/$UCM_ARCHIVE_NAME
 
 # Unicode support
 ENV LANG C.UTF-8
@@ -25,10 +28,11 @@ RUN apt-get update \
     # Verify git, process tools, lsb-release (common in install instructions for CLIs) installed
     && apt-get -y install git iproute2 procps lsb-release wget \
     # install unison
-    && wget https://github.com/unisonweb/unison/releases/download/M2-Linux/unison-Linux.tar.gz \
-    && tar -xzf unison-Linux.tar.gz \
-    && ln -s ucm /usr/bin/ \
-    && rm unison-Linux.tar.gz \
+    && mkdir -p $UCM_DIR \
+    && wget -P $UCM_DIR $UCM_ARCHIVE_URL \
+    && tar -C $UCM_DIR -xzf $UCM_DIR/$UCM_ARCHIVE_NAME \
+    && ln -s $UCM_DIR/ucm /usr/bin/ \
+    && rm $UCM_DIR/$UCM_ARCHIVE_NAME \
     #
     # Create a non-root user to use if preferred - see https://aka.ms/vscode-remote/containers/non-root-user.
     && groupadd --gid $USER_GID $USERNAME \
